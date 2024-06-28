@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="IndicatorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-06-28T08:17:05" hostname="DESKTOP-H7BUCTE" time="0.029">
-  <properties/>
-  <testcase name="emaTest()" classname="IndicatorTest" time="0.029"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
