@@ -28,7 +28,7 @@ public class IndicatorUtils {
     /**
      * Calculates the sma the standard way:
      * takes 0 to period values as initial and
-     * proceeds to calculate the sma with the
+     * proceeds to calculateWithSma the sma with the
      * remaining values.
      * @param prices
      * @param period
