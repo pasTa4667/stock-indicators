@@ -135,7 +135,7 @@ public class IndicatorTest {
     @Test
     void bandsTest() {
         List<Double> c = List.of(12.0,11.0,12.0,14.0,18.0,12.0,15.0,13.0,16.0,12.0,11.0,13.0,15.0,14.0,16.0,18.0,22.0,19.0,24.0,17.0,19.0);
-        Bands b = BollingerBands.calculate(3, c, 2);
+        Bands b = BollingerBands.calculateWithSma(3, c, 2);
     }
 
     @Test
@@ -144,7 +144,8 @@ public class IndicatorTest {
         List<Double> lows = List.of(125.36,126.16,124.93,126.09,126.82,126.48,126.03,124.83,126.39,125.72,124.56,124.57,125.07,126.86,126.63,126.80,126.71,126.80,126.13,125.92,126.99,127.81,128.47,128.06,127.61,127.60,127.00,126.90,127.49,127.40);
         List<Double> closes = List.of(127.29,127.18,128.01,127.11,127.73,127.06,127.33,128.71,127.87,128.58,128.60,127.93,128.11,127.60,127.60,128.69,128.27);
         int period = 14;
-        OscillatorResult res = StochasticOscillator.calculate(period, closes, highs, lows);
+        int periodD = 3;
+        OscillatorResult res = StochasticOscillator.calculate(period, periodD, closes, highs, lows);
         List<Double> expected = List.of(70.44,67.61,89.20,65.81,81.75,64.52,74.53,98.58,70.10,73.06,73.42,61.23,60.96,40.39,40.39,66.83,56.73);
         assertEquals(expected.getLast(), res.k().getLast(), 0.1);
     }
