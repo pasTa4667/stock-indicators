@@ -1,5 +1,7 @@
 package org.indic.indicators;
 
+import org.indic.enums.Trend;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,45 @@ public class RelativeStrengthIndex {
         }
 
         return rsi;
+    }
+
+    /**
+     * Generates a signal based on the last period values.
+     * @param rsi Values, at least period + 1
+     * @param period The amount of rsi values to look at
+     * @return Trend signal
+     */
+    public static Trend generateSignal(List<Double> rsi, int period) {
+        if(rsi.get(rsi.size() - 1) == 100.0) return Trend.BEARISH; // Overbought
+        if(rsi.get(rsi.size() - 1) == 0.0) return Trend.BULLISH; // Oversold
+
+        if (rsi.size() < period + 1) {
+            throw new IllegalArgumentException("RSI must have at least period + 1 values.");
+        }
+
+        boolean oversold = true;
+        boolean overbought = true;
+
+        // Check RSI values over the specified period
+        for (int i = rsi.size() - period - 1; i < rsi.size(); i++) {
+            if (rsi.get(i) >= 30) {
+                oversold = false;
+            }
+            if (rsi.get(i) <= 70) {
+                overbought = false;
+            }
+        }
+
+        double latestRsi = rsi.get(rsi.size() - 1);
+
+        // Confirm the latest RSI value for the signal
+        if (oversold && latestRsi > 30) {
+            return Trend.BULLISH;
+        } else if (overbought && latestRsi < 70) {
+            return Trend.BEARISH;
+        }
+
+        return Trend.NONE;
     }
 
 }

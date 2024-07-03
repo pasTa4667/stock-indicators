@@ -1,5 +1,6 @@
 package org.indic.indicators;
 
+import org.indic.enums.Trend;
 import org.indic.records.MacdResult;
 
 import java.util.ArrayList;
@@ -109,6 +110,40 @@ public class Macd extends IndicatorUtils {
         }
 
         return new MacdResult(macdLine, signalLine, histogram);
+    }
+
+    /**
+     * Generates a signal based on the last to macd and signal values.
+     * @param macdLine  Macd line values
+     * @param signalLine Signal line values
+     * @return  A Trend
+     */
+    public static Trend generateSignalSimple(List<Double> macdLine, List<Double> signalLine) {
+        if(macdLine.size() < 2 || signalLine.size() < 2) {
+            throw new IllegalArgumentException("Macd Line and Signal must have at least 2 values");
+        }
+
+        double curMacd = macdLine.get(macdLine.size() - 1);
+        double prevMacd = macdLine.get(macdLine.size() - 2);
+        double curSignal = signalLine.get(signalLine.size() - 1);
+        double prevSignal = signalLine.get(signalLine.size() - 1);
+
+        if(prevMacd < prevSignal && curMacd > curSignal) {
+            return Trend.BULLISH;
+        } else if(prevMacd > prevSignal && curMacd < curSignal) {
+            return Trend.BEARISH;
+        }
+
+        return Trend.NONE;
+    }
+
+    /**
+     * Generates a signal based on the last to macd and signal values.
+     * @param result The Macd Results at least 2 values for line and signal
+     * @return  A Trend
+     */
+    public static Trend generateSignalSimple(MacdResult result) {
+        return generateSignalSimple(result.line(), result.signal());
     }
 }
 

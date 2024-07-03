@@ -1,5 +1,7 @@
 package org.indic.indicators;
 
+import org.indic.enums.Trend;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -47,6 +49,58 @@ public class AverageTrueRange {
         }
 
         return atrValues;
+    }
+
+
+    /**
+     * Generates a Trend based on whether the last atr is above or below the given thresholds.
+     * @param atr Average True Range value(s)
+     * @param upperThreshold Upper Threshold to compare
+     * @param lowerThreshold Lower Threshold to compare
+     * @return Trend
+     */
+    public static Trend generateSignalSimple(List<Double> atr, double upperThreshold, double lowerThreshold) {
+        if(atr.size() == 0) {
+            throw new IllegalArgumentException("Atr must have at least one value");
+        }
+
+        double lastAtr = atr.get(atr.size() - 1);
+
+        if(lastAtr > upperThreshold) {
+            return Trend.BULLISH;
+        } else if(lastAtr < lowerThreshold) {
+            return Trend.BEARISH;
+        }
+
+        return Trend.NONE;
+    }
+
+    /**
+     * Generates a Trend based on the last atr, close, high and low.
+     * @param atr Average True Range value(s)
+     * @param atrMultiplier A multiplier, often 2
+     * @param lastClose Latest close
+     * @param lastHigh Latest high
+     * @param lastLow Latest low
+     * @return Trend
+     */
+    public static Trend generateBreakoutSignal(List<Double> atr, double atrMultiplier, double lastClose, double lastHigh, double lastLow) {
+        if(atr.size() == 0) {
+            throw new IllegalArgumentException("Atr must have at least one value");
+        }
+
+        double lastAtr = atr.get(atr.size() - 1);
+
+        double buyLevel = lastLow + lastAtr * atrMultiplier;
+        double sellLevel = lastHigh + lastAtr * atrMultiplier;
+
+        if(lastClose > buyLevel) {
+            return Trend.BULLISH;
+        } else if(lastClose < sellLevel) {
+            return Trend.BEARISH;
+        }
+
+        return Trend.NONE;
     }
 
 }
